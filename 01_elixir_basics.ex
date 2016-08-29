@@ -168,3 +168,28 @@ defmodule Chop do
     IO.puts "Yes #{n}"
   end
 end
+
+# The pipe operator
+(1..10) |> Enum.map(&(&1*&1)) |> Enum.filter(&(&1 < 50))
+
+# Module directives
+
+## Import
+defmodule Example do
+  import Enum, only: [uniq: 1]
+  def func1, do: [1, 2, 2]
+
+  def func2, do: uniq(func1)
+end
+
+## Alias
+defmodule Example do
+  alias Enum, as: EN
+  def func2, do: EN.uniq([1, 2, 2])
+end
+
+# Module attributes (usually used as constants)
+defmodule Example do
+  @version "v1.0.1"
+  def version, do: "Running version #{@version}"
+end
