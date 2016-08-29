@@ -106,3 +106,65 @@ Enum.map [1,2,3,4], &(&1 + 2)
 
 Enum.each [1,2,3,4], fn x -> IO.inspect x end
 Enum.each [1,2,3,4], &(IO.inspect &1)
+
+# Modules and named functions
+
+defmodule Times do
+  def double(n) do
+    n * 2
+  end
+
+  def triple(n), do: n * 3
+
+  def quadruple(n), do: double(n) + double(n)
+end
+Times.double(2)
+Times.triple(2)
+Times.quadruple(2)
+
+defmodule Factorial do
+  def of(0), do: 1
+  def of(n), do: n * of(n-1)
+end
+Factorial.of(5)
+
+defmodule MySum do
+  def sum(0), do: 0
+  def sum(n), do: n + sum(n-1)
+end
+MySum.sum(5)
+
+defmodule MyGcd do
+  def gcd(x, 0), do: x
+  def gcd(x, y), do: gcd(y, rem(x,y))
+end
+
+## Guard clauses (predicates attached to function definition)
+defmodule Factorial do
+  def of(0), do: 1
+  def of(n) when n > 0, do: n * of(n-1)
+end
+Factorial.of(-5)
+
+## Exercise
+
+defmodule Chop do
+  def guess(n, low..high = range) do
+    current = div(high+low, 2)
+    _guess(n, range, current)
+  end
+
+  def _guess(n, low..high = range , current) when current > n do
+    IO.puts "Is it #{current}"
+    _guess(n, low..current, div(low + current, 2))
+  end
+
+  def _guess(n, low..high = range , current) when current < n do
+    IO.puts "Is it #{current}"
+    _guess(n, current..high, div(current + high, 2))
+  end
+
+  def _guess(n, _, current) when current == n do
+    IO.puts "Yes #{n}"
+  end
+end
