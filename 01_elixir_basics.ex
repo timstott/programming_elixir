@@ -193,3 +193,43 @@ defmodule Example do
   @version "v1.0.1"
   def version, do: "Running version #{@version}"
 end
+
+# Lists and recursion
+
+defmodule MyList do
+  def len([]), do: 0
+  def len([_head|tail]), do: 1 + len(tail)
+
+  def map([], _func), do: []
+  def map([head | tail], func), do: [ func.(head) | map(tail, func) ]
+
+  def sum(list), do: sum(list, 0)
+  defp sum([], total), do: total
+  defp sum([head | tail], total), do: sum(tail, total+head)
+end
+
+MyList.len([1, 2, 3, 4])
+MyList.map([1, 2, 3], &(&1*&1))
+
+## Exercise
+
+defmodule MyList do
+  def sum([]), do: 0
+  def sum([head | tail]), do: head + sum(tail)
+
+  def map([], _func), do: []
+  def map([head | tail], func), do: [ func.(head) | map(tail, func) ]
+
+  def mapsum(list, func), do: map(list, func) |> sum
+
+  def max([x]), do: x
+  def max([head | tail]), do: Kernel.max(head, max(tail))
+end
+
+## More complex list patterns
+defmodule Swapper do
+  def swap([]), do: []
+  def swap([a, b | tail]), do: [b, a | swap(tail)]
+  def swap(_), do: raise "Odd number of elements"
+end
+Swapper.swap([1, 2, 3, 4])
