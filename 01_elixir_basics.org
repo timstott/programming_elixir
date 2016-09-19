@@ -1,24 +1,34 @@
-# Data structures
-
-## Tuples
+* Data structures
+** Tuples
+#+BEGIN_SRC elixir
 {1, 2}
 {status, count, action} = {:ok, 42, "next"}
+#+END_SRC
 
-## Lists
+** Lists
+#+BEGIN_SRC elixir
 [1, 2 ,3] ++ [4, 5 ,6] # concatenation
 [1, 2 ,3] -- [1]       # difference
+#+END_SRC
 
-## Maps
+#+BEGIN_SRC elixir
+[1, 2 ,3] ++ [4, 5 ,6] # concatenation
+[1, 2 ,3] -- [1]       # difference
+#+END_SRC
+
+** Maps
+#+BEGIN_SRC elixir
 user = %{"name" => "Tim", "age" => 1}
 key = "name"
 user[key]
 colors = %{red: 0xff000, green: 65280}
 colors[:red]
-colors.green
+colors.red
+#+END_SRC
 
-# Scope
-
-## with
+* Scope
+** with
+#+BEGIN_SRC elixir
 content = "Hello World"
 result = with content = "Goodbye",
               name = "Tim",
@@ -28,12 +38,17 @@ result = with content = "Goodbye",
          end
 IO.puts result
 IO.puts content
+#+END_SRC
 
-# Functions
+* Functions
+** Anonymous
+#+BEGIN_SRC elixir
 sum = fn (a, b) -> a + b end
 sum.(1, 2)
+#+END_SRC
 
-## Exercises
+*** Exercise
+#+BEGIN_SRC elixir
 list_concat = fn (l1, l2) -> l1 ++ l2 end
 list_concat.([:a, :b], [:c, :d])
 
@@ -67,9 +82,10 @@ IO.puts conditional_less_fizzbuzz.(10)
 IO.puts conditional_less_fizzbuzz.(11)
 IO.puts conditional_less_fizzbuzz.(12)
 IO.puts conditional_less_fizzbuzz.(15)
+#+END_SRC
 
-
-## Function closure
+** Closure
+#+BEGIN_SRC elixir
 greeter = fn name ->
   fn ->
     "Hello #{name}!"
@@ -78,7 +94,9 @@ end
 
 dave_greeter = greeter.("Dave")
 IO.puts dave_greeter.()
+#+END_SRC
 
+#+BEGIN_SRC elixir
 add_b = fn a ->
   fn b ->
     a + b
@@ -87,28 +105,35 @@ end
 
 add_two = add_b.(2)
 IO.puts add_two.(8)
+#+END_SRC
 
-## Exercises
+*** Exercise
+#+BEGIN_SRC elixir
 prefix = fn x ->
   fn y ->
     "#{x} #{y}"
   end
 end
 prefix.("Mr").("James")
+#+END_SRC
 
-## & function notation
+** & Function notation
+#+BEGIN_SRC elixir
 add_a_b = &(&1 + &2)
 add_a_b.(1, 2)
+#+END_SRC
 
-## Exercise
+*** Exercise
+#+BEGIN_SRC elixir
 Enum.map [1,2,3,4], fn x -> x + 2 end
 Enum.map [1,2,3,4], &(&1 + 2)
 
 Enum.each [1,2,3,4], fn x -> IO.inspect x end
 Enum.each [1,2,3,4], &(IO.inspect &1)
+#+END_SRC
 
-# Modules and named functions
-
+* Modules and named functions
+#+BEGIN_SRC elixir
 defmodule Times do
   def double(n) do
     n * 2
@@ -121,33 +146,44 @@ end
 Times.double(2)
 Times.triple(2)
 Times.quadruple(2)
+#+END_SRC
 
+#+BEGIN_SRC elixir
 defmodule Factorial do
   def of(0), do: 1
   def of(n), do: n * of(n-1)
 end
 Factorial.of(5)
+#+END_SRC
 
+#+BEGIN_SRC elixir
 defmodule MySum do
   def sum(0), do: 0
   def sum(n), do: n + sum(n-1)
 end
 MySum.sum(5)
+#+END_SRC
 
+#+BEGIN_SRC elixir
 defmodule MyGcd do
   def gcd(x, 0), do: x
   def gcd(x, y), do: gcd(y, rem(x,y))
 end
+#+END_SRC
 
-## Guard clauses (predicates attached to function definition)
+** Guard clauses
+Predicates attached to function definition
+
+#+BEGIN_SRC elixir
 defmodule Factorial do
   def of(0), do: 1
   def of(n) when n > 0, do: n * of(n-1)
 end
 Factorial.of(-5)
+#+END_SRC
 
-## Exercise
-
+*** Exercise
+#+BEGIN_SRC elixir
 defmodule Chop do
   def guess(n, low..high = range) do
     current = div(high+low, 2)
@@ -168,34 +204,43 @@ defmodule Chop do
     IO.puts "Yes #{n}"
   end
 end
+#+END_SRC
 
-# The pipe operator
+* The pipe operator
+#+BEGIN_SRC elixir
 (1..10) |> Enum.map(&(&1*&1)) |> Enum.filter(&(&1 < 50))
-
-# Module directives
-
-## Import
+#+END_SRC
+* Module directives
+** Import
+#+BEGIN_SRC elixir
 defmodule Example do
   import Enum, only: [uniq: 1]
   def func1, do: [1, 2, 2]
 
   def func2, do: uniq(func1)
 end
+#+END_SRC
 
-## Alias
+** Alias
+#+BEGIN_SRC elixir
 defmodule Example do
   alias Enum, as: EN
   def func2, do: EN.uniq([1, 2, 2])
 end
+#+END_SRC
 
-# Module attributes (usually used as constants)
+* Module attributes
+Usually used as constants
+
+#+BEGIN_SRC elixir
 defmodule Example do
   @version "v1.0.1"
   def version, do: "Running version #{@version}"
 end
+#+END_SRC
 
-# Lists and recursion
-
+* Lists and recursion
+#+BEGIN_SRC elixir
 defmodule MyList do
   def len([]), do: 0
   def len([_head|tail]), do: 1 + len(tail)
@@ -210,9 +255,10 @@ end
 
 MyList.len([1, 2, 3, 4])
 MyList.map([1, 2, 3], &(&1*&1))
+#+END_SRC
 
-## Exercise
-
+** Exercise
+#+BEGIN_SRC elixir
 defmodule MyList do
   def sum([]), do: 0
   def sum([head | tail]), do: head + sum(tail)
@@ -227,17 +273,20 @@ defmodule MyList do
 end
 
 MyList.mapsum([1, 2, 3], &(&1 + 1))
+#+END_SRC
 
-## More complex list patterns
+** More complex list patterns
+#+BEGIN_SRC elixir
 defmodule Swapper do
   def swap([]), do: []
   def swap([a, b | tail]), do: [b, a | swap(tail)]
   def swap(_), do: raise "Odd number of elements"
 end
 Swapper.swap([1, 2, 3, 4])
+#+END_SRC
 
-## Lists of lists
-
+** Lists of lists
+#+BEGIN_SRC elixir
 defmodule WeatherHistory do
   def for_location_27([]), do: []
   def for_location_27([ [time, 27, temp, rain] | tail]) do
@@ -268,9 +317,10 @@ defmodule WeatherHistory do
 end
 
 WeatherHistory.for_location(WeatherHistory.test_data, 27)
+#+END_SRC
 
-## Exercise
-
+*** Exercise
+#+BEGIN_SRC elixir
 defmodule MyList do
   def span(from, to) when from == to, do: to
 
@@ -280,3 +330,5 @@ defmodule MyList do
 end
 
 MyList.span(0,5)
+#+END_SRC
+
