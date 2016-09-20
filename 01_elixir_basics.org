@@ -1,4 +1,4 @@
-* Data structures
+* Chapter 4 Elixir Basics
 ** Tuples
 #+BEGIN_SRC elixir
 {1, 2}
@@ -6,11 +6,6 @@
 #+END_SRC
 
 ** Lists
-#+BEGIN_SRC elixir
-[1, 2 ,3] ++ [4, 5 ,6] # concatenation
-[1, 2 ,3] -- [1]       # difference
-#+END_SRC
-
 #+BEGIN_SRC elixir
 [1, 2 ,3] ++ [4, 5 ,6] # concatenation
 [1, 2 ,3] -- [1]       # difference
@@ -26,25 +21,33 @@ colors[:red]
 colors.red
 #+END_SRC
 
-* Scope
-** with
+Raises a ~KeyError~ when using the dot notation on unknown keys
+
+** Scope
+~with~ expression allows to define local scope (e.g. when temporary variables needed)
 #+BEGIN_SRC elixir
 content = "Hello World"
 result = with content = "Goodbye",
               name = "Tim",
            IO.puts [content, name]
-         do 
+         do
            "The world is mine"
          end
 IO.puts result
 IO.puts content
 #+END_SRC
 
-* Functions
+* Chapter 5 Functions
 ** Anonymous
 #+BEGIN_SRC elixir
 sum = fn (a, b) -> a + b end
 sum.(1, 2)
+#+END_SRC
+
+When functions take no arguments, parentheses still needed
+#+BEGIN_SRC elixir
+greet = fn -> IO.puts "Hello" end
+greet.()
 #+END_SRC
 
 *** Exercise
@@ -132,7 +135,8 @@ Enum.each [1,2,3,4], fn x -> IO.inspect x end
 Enum.each [1,2,3,4], &(IO.inspect &1)
 #+END_SRC
 
-* Modules and named functions
+* Chapter 6 Modules and named functions
+*** Exercise
 #+BEGIN_SRC elixir
 defmodule Times do
   def double(n) do
@@ -206,12 +210,12 @@ defmodule Chop do
 end
 #+END_SRC
 
-* The pipe operator
+** The pipe operator
 #+BEGIN_SRC elixir
 (1..10) |> Enum.map(&(&1*&1)) |> Enum.filter(&(&1 < 50))
 #+END_SRC
-* Module directives
-** Import
+** Import directive
+Brings functions into the current scope
 #+BEGIN_SRC elixir
 defmodule Example do
   import Enum, only: [uniq: 1]
@@ -221,7 +225,7 @@ defmodule Example do
 end
 #+END_SRC
 
-** Alias
+** Alias directive
 #+BEGIN_SRC elixir
 defmodule Example do
   alias Enum, as: EN
@@ -229,7 +233,7 @@ defmodule Example do
 end
 #+END_SRC
 
-* Module attributes
+** Module attributes
 Usually used as constants
 
 #+BEGIN_SRC elixir
@@ -239,7 +243,8 @@ defmodule Example do
 end
 #+END_SRC
 
-* Lists and recursion
+* Chapter 7 Lists and recursion
+** Using head and tail
 #+BEGIN_SRC elixir
 defmodule MyList do
   def len([]), do: 0
@@ -256,8 +261,7 @@ end
 MyList.len([1, 2, 3, 4])
 MyList.map([1, 2, 3], &(&1*&1))
 #+END_SRC
-
-** Exercise
+*** Exercise
 #+BEGIN_SRC elixir
 defmodule MyList do
   def sum([]), do: 0
@@ -331,4 +335,3 @@ end
 
 MyList.span(0,5)
 #+END_SRC
-
